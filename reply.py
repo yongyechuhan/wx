@@ -29,6 +29,7 @@ class TextMsg(Msg):
         <Content><![CDATA[{Content}]]></Content>
         </xml>
         """
+        print XmlForm
         return XmlForm.format(**self.__dict)
 
 
@@ -50,6 +51,27 @@ class ImageMsg(Msg):
         <Image>
         <MediaId><![CDATA[{MediaId}]]></MediaId>
         </Image>
+        </xml>
+        """
+        return XmlForm.format(**self.__dict)
+
+class EventMsg(Msg):
+    def __init__(self, toUserName, fromUserName):
+        self.__dict = dict()
+        self.__dict['ToUserName'] = toUserName
+        self.__dict['FromUserName'] = fromUserName
+        self.__dict['CreateTime'] = int(time.time())
+
+    def send(self):
+        XmlForm = """
+        <xml>
+        <ToUserName><![CDATA[{ToUserName}]]></ToUserName>
+        <FromUserName><![CDATA[{FromUserName}]]></FromUserName>
+        <CreateTime>{CreateTime}</CreateTime>
+        <ScanCodeInfo>
+        <ScanType><![CDATA[qrcode]]></ScanType>
+        <ScanResult><![CDATA[http://weixin.qq.com/r/pUNnf4HEX9wgrcUc9xa3]]></ScanResult>
+        </ScanCodeInfo>
         </xml>
         """
         return XmlForm.format(**self.__dict)

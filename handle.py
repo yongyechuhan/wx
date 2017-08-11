@@ -3,6 +3,9 @@
 
 import hashlib
 import web
+import receive
+import reply
+import traceback
 
 class Handle(object):
     def GET(self):
@@ -14,7 +17,7 @@ class Handle(object):
             timestamp = data.timestamp
             nonce = data.nonce
             echostr = data.echostr
-            token = "L13x52aihui"
+            token = "youxiu13717891108"
 
             list = [token, timestamp, nonce]
             list.sort()
@@ -33,14 +36,25 @@ class Handle(object):
             webData = web.data()
             print "Handle Post webdata is ", webData   #后台打日志
             recMsg = receive.parse_xml(webData)
-            if isinstance(recMsg, receive.Msg) and recMsg.MsgType == 'text':
-                toUser = recMsg.FromUserName
-                fromUser = recMsg.ToUserName
-                content = "test"
-                replyMsg = reply.TextMsg(toUser, fromUser, content)
-                return replyMsg.send()
+            if isinstance(recMsg, receive.Msg):
+                if recMsg.MsgType == 'text':
+                    toUser = recMsg.FromUserName
+                    fromUser = recMsg.ToUserName
+                    content = "test"
+                    replyMsg = reply.EventMsg(toUser, fromUser)
+                    print "Wait for send"
+                    return replyMsg.send()
+                elif recMsg.MsgType == 'event':
+                    toUser = recMsg.FromUserName
+                    fromUser = recMsg.ToUserName
+                    content = "test"
+                    replyMsg = reply.TextMsg(toUser, fromUser, content)
+                    print "Wait for send"
+                    return replyMsg.send()
             else:
                 print "暂且不处理"
                 return "success"
         except Exception, Argment:
+            print 'traceback.print_exc():'
+            traceback.print_exc()
             return Argment
