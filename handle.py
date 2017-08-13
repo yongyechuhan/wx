@@ -5,6 +5,8 @@ import hashlib
 import web
 import receive
 import reply
+import certificate
+import sign
 import traceback
 
 class Handle(object):
@@ -35,21 +37,30 @@ class Handle(object):
         try:
             webData = web.data()
             print "Handle Post webdata is ", webData   #后台打日志
+            token_info = certificate.certificate()
+            sigurate = sign.Sign(token_info.jsapi_ticket, web.ctx.home)
+            sigurate_ret = sigurate.sign()
+            print "signature:"+sigurate_ret['signature']
+
             recMsg = receive.parse_xml(webData)
             if isinstance(recMsg, receive.Msg):
                 if recMsg.MsgType == 'text':
                     toUser = recMsg.FromUserName
                     fromUser = recMsg.ToUserName
-                    content = "test"
-                    replyMsg = reply.EventMsg(toUser, fromUser)
-                    print "Wait for send"
+                    content = "你好，欢迎进入智绘演意公众号。"
+                    replyMsg = reply.TextMsg(toUser, fromUser, content)
                     return replyMsg.send()
-                elif recMsg.MsgType == 'event':
+                elif recMsg.MsgType == 'image':
                     toUser = recMsg.FromUserName
                     fromUser = recMsg.ToUserName
-                    content = "test"
+                    content = "感谢你的上传"
                     replyMsg = reply.TextMsg(toUser, fromUser, content)
-                    print "Wait for send"
+                    return replyMsg.send()
+                elif recMsg.MsgType == 'event' and recMsg.Event == "CLICK":
+                    toUser = recMsg.FromUserName
+                    fromUser = recMsg.ToUserName
+                    content = "即将上线！"
+                    replyMsg = reply.TextMsg(toUser, fromUser, content)
                     return replyMsg.send()
             else:
                 print "暂且不处理"

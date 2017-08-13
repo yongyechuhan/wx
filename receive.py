@@ -11,6 +11,8 @@ def parse_xml(web_data):
         return TextMsg(xmlData)
     elif msg_type == 'image':
         return ImageMsg(xmlData)
+    elif msg_type == 'event':
+        return EventMsg(xmlData)
 
 class Msg(object):
     def __init__(self, xmlData):
@@ -35,5 +37,6 @@ class ImageMsg(Msg):
 class EventMsg(Msg):
     def __init__(self, xmlData):
         Msg.__init__(self, xmlData)
+        print "receive event"
         self.Event = xmlData.find('Event').text
         self.EventKey = xmlData.find('EventKey').text
