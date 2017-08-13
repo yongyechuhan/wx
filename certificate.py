@@ -12,7 +12,6 @@ expire_param = "expires_in"
 
 def checkTokenVlaid():
     if static.TOKEN_INIT_TIME is None:
-        print False
         return False
     else:
         now = int(time.time())
@@ -72,5 +71,4 @@ class certificate():
         req = urllib2.Request(url)
         res_data = urllib2.urlopen(req)
         res = res_data.read()
-        print res
         return json.loads(res)
