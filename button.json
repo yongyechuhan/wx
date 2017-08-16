@@ -10,10 +10,10 @@
           "url":"http://mp.weixin.qq.com/s?__biz=MzA3MDUxNzMzMA==&mid=2651975932&idx=1&sn=cc06946d767542efb4e690ff39d0ce3b&chksm=84dec7c1b3a94ed7df1e3f53aeaacce4451ea631bb1c81400448e4f6dfbe9e170742acdda3b7&scene=18#wechat_redirect"
         },
         {
-          "type":"pic_photo_or_album",
+          "type":"view",
           "name":"剧创空间",
           "key":"play_space",
-          "sub_button":[]
+          "url":"http://junxyd.cn/wx/index"
         },
         {
           "type":"view",

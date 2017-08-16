@@ -33,10 +33,8 @@ def wx_get(request):
         list = [token, timestamp, nonce]
         list.sort()
         sha1 = hashlib.sha1()
-        print sha1
         map(sha1.update, list)
         hashcode = sha1.hexdigest()
-        print hashcode
         print "handle/GET func: hashcode, signature: ", hashcode, signature
         if hashcode == signature:
             return HttpResponse(echostr)
