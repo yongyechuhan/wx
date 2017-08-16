@@ -2,7 +2,6 @@
 # filename: handle.py
 
 import hashlib
-import web
 import receive
 import reply
 import certificate
@@ -52,10 +51,6 @@ def wx_post(request):
     try:
         webData = request.body
         print "Handle Post webdata is ", webData  # 后台打日志
-        token_info = certificate.certificate()
-        sigurate = sign.Sign(token_info.jsapi_ticket, request.path)
-        sigurate_ret = sigurate.sign()
-        print "signature:" + sigurate_ret['signature']
 
         recMsg = receive.parse_xml(webData)
         if isinstance(recMsg, receive.Msg):
