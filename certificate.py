@@ -15,7 +15,6 @@ def checkTokenVlaid():
         return False
     else:
         now = int(time.time())
-        print now - static.TOKEN_INIT_TIME
         if not static.TOKEN_EXPIRE_TIME and now - static.TOKEN_INIT_TIME >= static.TOKEN_EXPIRE_TIME:
             return False
         else:
@@ -46,7 +45,6 @@ class certificate():
             tokenInfo = self.sendHttpGet(getAccessTokenUrl)
             access_token = tokenInfo["%s" % access_param]
 
-            print "get access_token:"+access_token
             if access_token is not None:
                 self.accessToken = access_token
 
@@ -57,11 +55,7 @@ class certificate():
                 self.jsapi_ticket = jsapi_ticket
 
             expire_time = tokenInfo["%s" % expire_param]
-            print "get jspai_ticket:"+jsapi_ticket+" expireTime:"+str(expire_time)
-
             setCacheInfo(expire_time, access_token, jsapi_ticket)
-
-            print "set init_time:"+str(static.TOKEN_INIT_TIME)
         except Exception, Argment:
             print 'traceback.print_exc():'
             traceback.print_exc()
