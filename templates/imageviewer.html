@@ -1,0 +1,102 @@
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<!--标准mui.css-->
+		<link rel="stylesheet" href="../static/css/mui.min.css">
+		<!--App自定义的css-->
+		<link rel="stylesheet" href="../static/css/imageviewer.css">
+		<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+		<script type="text/javascript" src="../static/js/jquery-2.0.0.js"></script>
+		<script>
+            $(document).ready(function(){
+                var appId = {{appId | safe}}
+                if(appId == null || appId.length == 0){
+                    console.log("appId is Invalid");
+                    return;
+                }
+
+                var sigurate_inf = {{sigurate_inf | safe}};
+                if(sigurate_inf == null || sigurate_inf.length == 0){
+                    console.log("sigurate_inf is Invalid");
+                    return;
+                }
+
+                var sigurate_obj = eval('(' + sigurate_inf + ')');
+                valiSign(sigurate_obj, appId);
+
+                //通过ready接口处理成功验证
+                wx.ready(function(){
+                    // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后
+					chooseImage();
+                });
+            })
+
+            function valiSign(sigurate_obj, appId) {
+                //通过config接口注入权限验证配置
+                wx.config({
+                    debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                    appId: appId, // 必填，公众号的唯一标识
+                    timestamp: sigurate_obj.timestamp, // 必填，生成签名的时间戳
+                    nonceStr: sigurate_obj.nonceStr, // 必填，生成签名的随机串
+                    signature: sigurate_obj.signature,// 必填，签名
+                    jsApiList: ['chooseImage'] // 必填，需要使用的JS接口列表
+                });
+            }
+
+            function chooseImage(){
+                wx.chooseImage({
+                    count: 1, // 默认9
+                    sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+                    sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+                    success: function (res) {
+                        var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+						var picArea = $(".mui-content-padded");
+						//getUploadPic(localIds).appentTo(picArea);
+						var newPic = getUploadPic(localIds.get(0));
+						newPic.appendTo(picArea);
+                    }
+                });
+            }
+
+            function getUploadPic(localId){
+				var pic = "<img src='"+localId+"' data-preview-src='' data-preview-group='2'>"
+				return $("<p>"+pic+"</p>");
+			}
+		</script>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">image viewer（图片预览）</h1>
+		</header>
+		<div class="mui-content">
+			<div class="mui-content-padded">
+				<p>这是图片放大预览示例，点击如下图片体验全屏预览功能</p>
+				<p>
+					<img src="../static/images/yuantiao.jpg" data-preview-src="" data-preview-group="1" />
+				</p>
+				<p>图片全屏后，双击或双指缩放均可对图片进行放大、缩小操作，左右滑动可查看同组(data-preview-group相同的图片为一组)其它图片，点击会关闭预览</p>
+				<p>
+					<img src="../static/images/muwu.jpg" data-preview-src="" data-preview-group="1" />
+				</p>
+				<p>第三张图片，纯粹为了占位： </p>
+				<p>
+					<img src="../static/images/shuijiao.jpg" data-preview-src="" data-preview-group="1" />
+				</p>
+			</div>
+		</div>
+	</body>
+	<script src="../static/js/mui.min.js"></script>
+	<script src="../static/js/mui.zoom.js"></script>
+	<script src="../static/js/mui.previewimage.js"></script>
+	<script>
+		mui.previewImage();
+	</script>
+
+</html>
