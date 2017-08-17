@@ -23,4 +23,4 @@ def shareImage(request):
     sigurate_ret = sigurate.sign()
     print "signature:" + sigurate_ret['signature']
     data = "{'timestamp':'%s','nonceStr':'%s','signature':'%s'}" % (sigurate_ret['timestamp'], sigurate_ret['nonceStr'], sigurate_ret['signature'])
-    return render_to_response( 'imageviewer.html', {'sigurate_inf':json.dumps(data), 'appId':json.dumps(appId)})
+    return render_to_response( 'image_viewer.html', {'sigurate_inf':json.dumps(data), 'appId':json.dumps(appId)})
