@@ -13,7 +13,7 @@
           "type":"view",
           "name":"剧创空间",
           "key":"play_space",
-          "url":"http://junxyd.cn/wx/index"
+          "url":"https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxd5b3ccd7e8f8b824&redirect_uri=http%3a%2f%2f111.231.62.167%2fwx%2findex&response_type=code&scope=snsapi_base&state=test#wechat_redirect"
         },
         {
           "type":"view",

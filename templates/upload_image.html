@@ -3,9 +3,52 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-		<title>问题反馈</title>
-		<link rel="stylesheet" type="text/css" href="../static/css/mui.min.css" />
-		<link rel="stylesheet" type="text/css" href="../static/css/uploadImg.css" />
+		<title>画作分享</title>
+		<link rel="stylesheet" type="text/css" href="http://111.231.62.167/static/css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="http://111.231.62.167/static/css/uploadImg.css" />
+		<script src="http://111.231.62.167/static/js/jquery-2.0.0.js"></script>
+		<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+		<script type="text/javascript">
+			$(document).ready(function(){
+				var appId = {{appId | safe}}
+				if(appId == null || appId.length == 0){
+					console.log("appId is Invalid");
+					return;
+				}
+
+				var sigurate_inf = {{sigurate_inf | safe}};
+				if(sigurate_inf == null || sigurate_inf.length == 0){
+					console.log("sigurate_inf is Invalid");
+					return;
+				}
+
+				//获取服务器返回的openId
+        		var openId = {{openId | safe}};
+        		$('#openId').val(openId);
+
+				var sigurate_obj = eval('(' + sigurate_inf + ')');
+
+				//通过config接口注入权限验证配置
+				wx.config({
+				    debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+				    appId: appId, // 必填，公众号的唯一标识
+				    timestamp: sigurate_obj.timestamp, // 必填，生成签名的时间戳
+				    nonceStr: sigurate_obj.nonceStr, // 必填，生成签名的随机串
+				    signature: sigurate_obj.signature,// 必填，签名
+				    jsApiList: ['chooseImage','uploadImage'] // 必填，需要使用的JS接口列表
+				});
+
+				//通过ready接口处理成功验证
+				wx.ready(function(){
+					// config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后
+				});
+
+				wx.error(function(res){
+					// config信息验证失败会执行error函数，如签名过期导致验证失败
+					alert(res);
+				});
+			})
+		</script>
 	</head>
 
 	<body>
@@ -27,10 +70,11 @@
 			<div class="mui-input-row">
 				<textarea id='contact' class="mui-input-clear question" placeholder="请简单描述下画作的内容"></textarea>
 			</div>
+			<div style="display: none"><input id="openId"/></div>
 			<br />
 		</div>
-		<script src="../js/mui.min.js"></script>
-		<script src=" ../js/feedback.js" type="text/javascript" charset="utf-8"></script>
+		<script src="http://111.231.62.167/static/js/mui.min.js"></script>
+		<script src="http://111.231.62.167/static/js/feedback.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
 			mui.init();
 			mui('.mui-scroll-wrapper').scroll();
