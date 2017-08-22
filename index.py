@@ -18,10 +18,7 @@ from wxmodel.models import NoticerInfo
 
 @csrf_exempt
 def paintingShow(request):
-    oauth_code = request.GET['code']
-    getOAuthTokenUrl = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=%s&secret=%s&code=%s&grant_type=authorization_code" % ('wxd5b3ccd7e8f8b824','09bae2c8d09d5a9dd2b5e7f29629b712',oauth_code)
-    tokenInf = sendHttpGet(getOAuthTokenUrl)
-    openId = tokenInf['openid']
+    openId = "oDjv61BEZrRF7j0sz7Qr4OiTkl2g"
     painting_list = PaintingInfo.objects.all()
     return render_to_response( 'painting_show.html', {'openId':json.dumps(openId), 'paintingList':painting_list})
 
@@ -36,6 +33,10 @@ def shareImage(request):
     sigurate_ret = sigurate.sign()
     data = "{'timestamp':'%s','nonceStr':'%s','signature':'%s'}" % (sigurate_ret['timestamp'], sigurate_ret['nonceStr'], sigurate_ret['signature'])
     return render_to_response( 'upload_image.html', {'sigurate_inf':json.dumps(data), 'appId':json.dumps(appId), 'openId':json.dumps(openId)})
+
+@csrf_exempt
+def showHisChat(request):
+    return render_to_response('painting_chat.html')
 
 @csrf_exempt
 def uploadImage(request):

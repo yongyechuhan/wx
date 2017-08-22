@@ -12,7 +12,7 @@
 		<link rel="stylesheet" href="http://111.231.62.167/static/css/mui.min.css">
 		<!--App自定义的css-->
 		<link rel="stylesheet" type="text/css" href="http://111.231.62.167/static/css/app.css" />
-		<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+		<script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
 		<script src="http://111.231.62.167/static/js/jquery-2.0.0.js"></script>
 		<script src="http://111.231.62.167/static/js/mui.min.js"></script>
 	</head>
@@ -32,7 +32,7 @@
 			{% for painting in paintingList %}
 				<div class="mui-content">
 					<div class="mui-card">
-						<div class="mui-card-header mui-card-media">
+						<div class="mui-card-header mui-card-media" id = "painting">
 							<img src={{painting.open_id.user_head_img}} />
 							<div class="mui-media-body">
 								{{ painting.open_id.nick_name }}
@@ -54,6 +54,9 @@
 			var openId = {{openId | safe}};
 			$('#shareImage').on('touchend',function () {
 				window.location.href = 'http://111.231.62.167/wx/shareImage?openId='+openId;
+            })
+			$('#painting').on('touchend',function () {
+				window.location.href = 'http://111.231.62.167/wx/showHisChat?openId='+openId;
             })
 		</script>
 	</body>

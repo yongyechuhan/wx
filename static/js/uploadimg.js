@@ -85,6 +85,13 @@
                 success: function (res) {
                     var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
 					var imgSrc = localIds[0];
+
+					//判断是否是IOS使用的wkwebview内核，该情况不支持localId做img的src
+                    //需要使用wx的另外一个接口
+					if (window.__wxjs_is_wkwebview){
+
+                    }
+
 					placeholder.style.backgroundImage = "url("+imgSrc+")";
 					if (!self.parentNode.classList.contains('space')) { //已有图片
 						feedback.files.splice(index-1,1,{name:"images"+index,path:imgSrc});
