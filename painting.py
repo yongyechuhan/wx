@@ -9,7 +9,7 @@ class painting():
     def __init__(self, openId, shareImage, paintingName, paintingDesc):
         self.openId = openId
         self.shareImage = shareImage
-        self.shareTime = int(time.time())
+        self.shareTime = time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))
         self.paintingName = paintingName
         self.paintingDesc = paintingDesc
         self.nickname = ""

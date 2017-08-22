@@ -136,13 +136,11 @@
                 post_data+='"mediaId":"'+serverId+'"';
                 $.post(url, post_data, function () {
                     mui.alert("感谢你的上传，点击确定关闭","画作分享","确定",function () {
-                        feedback.clearForm();
-                        mui.back();
+                        window.location.href="https://open.weixin.qq.com/connect/oauth2/authorize?" +
+                            "appid=wxd5b3ccd7e8f8b824" +
+                            "&redirect_uri=http%3a%2f%2f111.231.62.167%2fwx%2findex&response_type=code&scope=snsapi_base&state=test#wechat_redirect";
                     });
                 })
-            },
-            error:function (res) {
-              alert(res);
             }
         });
     };

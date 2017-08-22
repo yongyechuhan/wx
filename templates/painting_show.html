@@ -29,39 +29,25 @@
 					<span class="mui-icon mui-icon-plus"></span>
 				</a>
 			</nav>
-
-			<div class="mui-content">
-				<div class="mui-card">
-					<div class="mui-card-header mui-card-media">
-						<img src="../static/images/logo.png" />
-						<div class="mui-media-body">
-							小M
-							<p>发表于 2016-06-30 15:30</p>
+			{% for painting in paintingList %}
+				<div class="mui-content">
+					<div class="mui-card">
+						<div class="mui-card-header mui-card-media">
+							<img src={{painting.open_id.user_head_img}} />
+							<div class="mui-media-body">
+								{{ painting.open_id.nick_name }}
+								<p>发表于 {{painting.share_time|date:"Y-m-d H:i:s"}}</p>
+							</div>
+						</div>
+						<div class="mui-card-content" >
+							<img src={{painting.pic_src}} alt="" width="100%"/>
+						</div>
+						<div class="mui-card-footer">
+							<a class="mui-icon mui-icon-star"></a>
 						</div>
 					</div>
-					<div class="mui-card-content" >
-						<img src="http://111.231.62.167/static/images/yuantiao.jpg" alt="" width="100%"/>
-					</div>
-					<div class="mui-card-footer">
-						<a class="mui-icon mui-icon-star"></a>
-					</div>
 				</div>
-				<div class="mui-card">
-					<div class="mui-card-header mui-card-media">
-						<img src="http://111.231.62.167/static/images/logo.png" />
-						<div class="mui-media-body">
-							小M
-							<p>发表于 2016-06-30 15:30</p>
-						</div>
-					</div>
-					<div class="mui-card-content" >
-						<img src="http://111.231.62.167/static/images/yuantiao.jpg" alt="" width="100%"/>
-					</div>
-					<div class="mui-card-footer">
-						<a class="mui-icon mui-icon-star"></a>
-					</div>
-				</div>
-			</div>
+			{%	endfor %}
 		</div>
 
 		<script type="text/javascript">
