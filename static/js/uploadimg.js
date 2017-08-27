@@ -89,10 +89,17 @@
 					//判断是否是IOS使用的wkwebview内核，该情况不支持localId做img的src
                     //需要使用wx的另外一个接口
 					if (window.__wxjs_is_wkwebview){
-
+                        wx.getLocalImgData({
+                            localId: imgSrc,
+                            success:function (res) {
+                                var imgBase64 = res.localData;
+                                placeholder.style.backgroundImage = "url("+imgBase64+")";
+                            }
+                        });
+                    } else {
+					    placeholder.style.backgroundImage = "url("+imgSrc+")";
                     }
 
-					placeholder.style.backgroundImage = "url("+imgSrc+")";
 					if (!self.parentNode.classList.contains('space')) { //已有图片
 						feedback.files.splice(index-1,1,{name:"images"+index,path:imgSrc});
 					} else { //加号
@@ -123,15 +130,15 @@
     }, false)
     feedback.send = function(content) {
         //添加上传数据
-		var post_data = "";
+		var post_data = "{";
         mui.each(content, function(index, element) {
             if (index !== 'images') {
-            	post_data+='"'+index+'":"'+element+'"&';
+            	post_data+='"'+index+'":"'+element+'",';
             }
         });
 
         var openId = $('#openId').val();
-        post_data+='"openId":"'+openId+'"&';
+        post_data+='"openId":"'+openId+'",';
 
         var file = feedback.files[0];
         //调用微信js上传图片
@@ -140,14 +147,15 @@
             isShowProgressTips: 1, // 默认为1，显示进度提示
             success: function (res) {
                 var serverId = res.serverId; // 返回图片的服务器端ID
-                post_data+='"mediaId":"'+serverId+'"';
+                post_data+='"mediaId":"'+serverId+'"}';
+
                 $.post(url, post_data, function () {
                     mui.alert("感谢你的上传，点击确定关闭","画作分享","确定",function () {
                         window.location.href="https://open.weixin.qq.com/connect/oauth2/authorize?" +
                             "appid=wxd5b3ccd7e8f8b824" +
                             "&redirect_uri=http%3a%2f%2f111.231.62.167%2fwx%2findex&response_type=code&scope=snsapi_base&state=test#wechat_redirect";
                     });
-                })
+                });
             }
         });
     };
