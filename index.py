@@ -8,6 +8,8 @@ import urllib
 import urllib2
 import traceback
 import os
+import sys
+import logging
 from django.template.loader import get_template
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render_to_response
@@ -15,6 +17,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse
 from wxmodel.models import PaintingInfo
 from wxmodel.models import NoticerInfo
+
+log = logging.getLogger('wxweb')
 
 @csrf_exempt
 def paintingShow(request):
@@ -41,8 +45,10 @@ def showHisChat(request):
 @csrf_exempt
 def uploadImage(request):
     try:
+        reload(sys)
+        sys.setdefaultencoding('utf8')
         filepath = os.path.dirname(__file__)
-        filepath+="/static/images/shareImg/"
+        filepath+="/media/shareImg/"
         postDict = json.loads(request.body)
         mediaId = postDict['mediaId']
         picname = postDict['picname'] + ".jpg"
@@ -54,7 +60,7 @@ def uploadImage(request):
         content = ""
         if 'content' in postDict:
             content = postDict['content']
-        painInf = painting.painting(openId, "../static/images/shareImg/"+picname, picname, content)
+        painInf = painting.painting(openId, "../media/shareImg/"+picname, picname, content)
         storePaintingInfo(painInf)
         return HttpResponse("success")
     except Exception, Argument:
@@ -71,10 +77,14 @@ def saveImage(filepath, imgName, mediaId):
         jsonDict = json.loads(urlResp.read())
         return False
     else:
-        buffer = urlResp.read()
-        mediaFile = file(filepath+imgName, "wb")
-        mediaFile.write(buffer)
-        return True
+        try:
+            buffer = urlResp.read()
+            mediaFile = open(filepath+imgName, "wb")
+            mediaFile.write(buffer)
+            return True
+        except Exception, Argument:
+            traceback.print_exc()
+            return False
 
 def storePaintingInfo(painInf):
     try:
