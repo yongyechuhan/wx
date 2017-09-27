@@ -9,7 +9,7 @@
         imageList: document.getElementById('image-list'),
         submitBtn: document.getElementById('submit')
     };
-    var url = 'http://111.231.62.167/wx/uploadImg';
+    var url = 'http://junxyd.cn/wx/uploadImg';
     feedback.files = [];
     feedback.uploader = null;
     feedback.deviceInfo = null;
@@ -153,7 +153,7 @@
                     mui.alert("感谢你的上传，点击确定关闭","画作分享","确定",function () {
                         window.location.href="https://open.weixin.qq.com/connect/oauth2/authorize?" +
                             "appid=wxd5b3ccd7e8f8b824" +
-                            "&redirect_uri=http%3a%2f%2f111.231.62.167%2fwx%2findex&response_type=code&scope=snsapi_base&state=test#wechat_redirect";
+                            "&redirect_uri=http%3a%2f%2fjunxyd.cn%2fwx%2findex&response_type=code&scope=snsapi_base&state=test#wechat_redirect";
                     });
                 });
             }
