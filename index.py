@@ -22,21 +22,27 @@ log = logging.getLogger('wxweb')
 
 @csrf_exempt
 def paintingShow(request):
-    openId = "oDjv61BEZrRF7j0sz7Qr4OiTkl2g"
-    painting_list = PaintingInfo.objects.all()
-    return render_to_response( 'painting_show.html', {'openId':json.dumps(openId), 'paintingList':painting_list})
+    try:
+        openId = "oDjv61BEZrRF7j0sz7Qr4OiTkl2g"
+        painting_list = PaintingInfo.objects.all()
+        return render_to_response( 'painting_show.html', {'openId':json.dumps(openId), 'paintingList':painting_list})
+    except Exception, Argument:
+        traceback.print_exc()
 
 @csrf_exempt
 def shareImage(request):
-    openId = ""
-    if 'openId' in request.GET and request.GET['openId']:
-        openId = request.GET['openId']
-    token_info = certificate.certificate()
-    appId = token_info.appId
-    sigurate = sign.Sign(token_info.jsapi_ticket, "http://"+request.get_host()+request.get_full_path())
-    sigurate_ret = sigurate.sign()
-    data = "{'timestamp':'%s','nonceStr':'%s','signature':'%s'}" % (sigurate_ret['timestamp'], sigurate_ret['nonceStr'], sigurate_ret['signature'])
-    return render_to_response( 'upload_image.html', {'sigurate_inf':json.dumps(data), 'appId':json.dumps(appId), 'openId':json.dumps(openId)})
+    try:
+        openId = ""
+        if 'openId' in request.GET and request.GET['openId']:
+            openId = request.GET['openId']
+        token_info = certificate.certificate()
+        appId = token_info.appId
+        sigurate = sign.Sign(token_info.jsapi_ticket, "http://"+request.get_host()+request.get_full_path())
+        sigurate_ret = sigurate.sign()
+        data = "{'timestamp':'%s','nonceStr':'%s','signature':'%s'}" % (sigurate_ret['timestamp'], sigurate_ret['nonceStr'], sigurate_ret['signature'])
+        return render_to_response( 'upload_image.html', {'sigurate_inf':json.dumps(data), 'appId':json.dumps(appId), 'openId':json.dumps(openId)})
+    except Exception, Argument:
+        traceback.print_exc()
 
 @csrf_exempt
 def showHisChat(request):
